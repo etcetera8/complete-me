@@ -69,15 +69,28 @@ describe('Search Trie', () => {
     it('provide a suggestion in an array', () => {
       trie.insert("amp")
       trie.insert("amped")
+      trie.insert("things")
+      trie.insert("amplifier")
       let suggestion = trie.suggest('am');
 
-      expect(suggestion).to.deep.eq(["amp", "amped"]);
+      expect(suggestion).to.deep.eq(["amp", "amped", "amplifier"]);
+    })
+
+    it('should not suggest words that don\'t start with the search', () => {
+      trie.insert("pig");
+      trie.insert("piglette");
+      trie.insert("piggyback");
+      trie.insert("wiggle")
+
+      let suggestion = trie.suggest('w')
+      expect(suggestion).to.deep.eq(["wiggle"]);
+    })
 
       // trie.insert("pizzeria")
       // let suggestion2 = trie.suggest('piz')
       // expect(suggestion2).to.deep.eq(["pizza", "pizzeria"]);
 
-    })
+   
 
     // it('should start with zero elements', () => {
     //   expect(trie.length).to.eq(0);
