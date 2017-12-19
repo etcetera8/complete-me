@@ -35,32 +35,52 @@ describe('Search Trie', () => {
 
   it('should change the wordEnd flag to true', () => {
     trie.insert('hi')
-    expect(Object.keys(trie.root.children.h.children.i.wordEnd)).to.eq(true)
+    expect(trie.root.children.h.children.i.wordEnd).to.eq(true)
   });
   
 
-  it.only('should share parent nodes for words that start with the same letter', () => {
+  it('should share parent nodes for words that start with the same letter', () => {
     trie.insert('hey');
     trie.insert('hi')
-    //trie.insert('zilch')
+    trie.insert('zilch')
 
-    //console.log(Object.keys(trie.root.children.h.children));
-    expect(Object.keys(trie.root.children.h.children)).to.eq(['e', 'i']);
+    expect(Object.keys(trie.root.children.h.children)).to.deep.eq(['e', 'i']);
   })
 
   it.skip('should not create duplicate nodes when inserting duplicate words', () => {
     trie.insert('hello');
-    trie.insert('bye')
-    trie.insert('hi');
-
-
-
-    //expect(Object.keys(trie.root.children.h.children.i.wordEnd)).to.eq(true)
+    trie.insert('hello');
+    console.log("trie: ", trie)
+    expect(trie['length']).to.eq(1)
   })
-
 
     //write alg that finds given letter, i.e. first that returns path to that node
     // phase 2 instead of searching for letter search for given string that equals
     // expect(trie.length).to.eq(2)
   })
+
+  describe.only('Suggest', () => {
+    let trie;
+
+    beforeEach(() => {
+      trie = new Trie();
+    })
+
+    it('provide a suggestion in an array', () => {
+      trie.insert("amp")
+      let suggestion = trie.suggest('am');
+
+      expect(suggestion).to.deep.eq(["amp"]);
+
+      // trie.insert("pizzeria")
+      // let suggestion2 = trie.suggest('piz')
+      // expect(suggestion2).to.deep.eq(["pizza", "pizzeria"]);
+
+    })
+
+    // it('should start with zero elements', () => {
+    //   expect(trie.length).to.eq(0);
+    // });
+  })
+
 
