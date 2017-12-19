@@ -68,9 +68,10 @@ describe('Search Trie', () => {
 
     it('provide a suggestion in an array', () => {
       trie.insert("amp")
+      trie.insert("amped")
       let suggestion = trie.suggest('am');
 
-      expect(suggestion).to.deep.eq(["amp"]);
+      expect(suggestion).to.deep.eq(["amp", "amped"]);
 
       // trie.insert("pizzeria")
       // let suggestion2 = trie.suggest('piz')
