@@ -1,6 +1,11 @@
 import { expect } from 'chai';
 import Trie from '../lib/Trie'
 import Node from '../lib/Node'
+import fs from 'fs';
+
+const text = "/usr/share/dict/words"
+const dictionary = fs.readFileSync(text).toString().trim().split('\n')
+
 describe('Search Trie', () => {
   let trie;
 
@@ -103,9 +108,20 @@ describe('Search Trie', () => {
       expect(suggestion).to.deep.eq(["pig", "pigs"]);
     })
 
+  })
 
+  describe('Suggest with dictionary', () => {
+    let trie;
 
+    beforeEach(() => {
+      trie = new Trie();
+    })
 
+    it('should have length eq to dictionary', () => {
+      trie.populate(dictionary)
+
+      expect(trie.length).to.eq(235886);
+    })
   })
 
 
