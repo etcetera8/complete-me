@@ -85,6 +85,16 @@ describe('Search Trie', () => {
       expect(suggestion).to.deep.eq(["wiggle"]);
     })
 
+    it('should return words with the same root', () => {
+      trie.insert("pig");
+      trie.insert("pigs");
+
+      let suggestion = trie.suggest('p')
+      expect(suggestion).to.deep.eq(["pig", "pigs"]);
+    })
+
+
+
 
   })
 
