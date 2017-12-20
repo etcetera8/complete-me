@@ -85,6 +85,16 @@ describe('Search Trie', () => {
       expect(suggestion).to.deep.eq(["wiggle"]);
     })
 
+    it('should not suggest words that don\'t start with the search', () => {
+      trie.insert("pizza");
+      trie.insert("pizzas");
+      trie.insert("pizzaria");
+      trie.insert("pizzaparlor")
+
+      let suggestion = trie.suggest('piz')
+      expect(suggestion).to.deep.eq(["pizza", "pizzas", "pizzaria", "pizzaparlor"]);
+    })
+
     it('should return words with the same root', () => {
       trie.insert("pig");
       trie.insert("pigs");
