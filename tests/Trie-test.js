@@ -6,7 +6,7 @@ import fs from 'fs';
 const text = "/usr/share/dict/words"
 const dictionary = fs.readFileSync(text).toString().trim().split('\n')
 
-describe('Search Trie', () => {
+describe('INSERT', () => {
   let trie;
 
   beforeEach(() => {
@@ -22,18 +22,18 @@ describe('Search Trie', () => {
     expect(trie.length).to.eq(1)
   })  
 
-  it('should take in a word keep count of words', () => {
+  it('should take in two words and keep count', () => {
     trie.insert("hi")
     trie.insert("hello")
     expect(trie.length).to.eq(2)
   })
 
-  it('should have its first child be equal to h', () => {
+  it('should have its first child be equal to h if "hi" is passed in', () => {
     trie.insert("hi")
     expect(Object.keys(trie.root.children)[0]).to.eq('h')
   })
 
-  it('should have its second child be equal to i', () => {
+  it('should have its second child be equal to i if "hi" is passed in', () => {
     trie.insert("hi")
     expect(Object.keys(trie.root.children.h.children)[0]).to.eq('i')
   })
@@ -54,16 +54,12 @@ describe('Search Trie', () => {
   it.skip('should not create duplicate nodes when inserting duplicate words', () => {
     trie.insert('hello');
     trie.insert('hello');
-    console.log("trie: ", trie)
     expect(trie['length']).to.eq(1)
   })
 
-    //write alg that finds given letter, i.e. first that returns path to that node
-    // phase 2 instead of searching for letter search for given string that equals
-    // expect(trie.length).to.eq(2)
-  })
+})
 
-  describe('Insert', () => {
+  describe('SUGGEST', () => {
     let trie;
 
     beforeEach(() => {
@@ -134,12 +130,10 @@ describe('Search Trie', () => {
     it('should sort them by the highest rank', () => {
       
       trie.populate(dictionary)
-      //expect(trie.length).to.eq(235886);
+      expect(trie.length).to.eq(235886);
       let suggestions = trie.suggest("piz")
-      console.log(suggestions)
       expect(suggestions).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
       trie.select("pizzeria");
-      console.log("after select: ", suggestions);
       let suggestions2 = trie.suggest("piz")
 
       expect(suggestions2).to.deep.eq(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
@@ -159,11 +153,9 @@ describe('Search Trie', () => {
       let suggestion1 = trie.suggest("piz")
       
       expect(suggestion1).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
-      console.log(suggestion1)
       trie.delete("pizzle");
       
       let suggestion2 = trie.suggest("piz")
-      console.log(suggestion2);
       expect(suggestion2).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato"]);
 
     })
