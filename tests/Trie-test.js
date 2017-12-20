@@ -122,6 +122,29 @@ describe('Search Trie', () => {
 
       expect(trie.length).to.eq(235886);
     })
+  })  
+
+  describe('Select', () => {
+
+    let trie;
+    beforeEach(() => {
+      trie = new Trie();
+    })
+
+    it('should sort them by the highest rank', () => {
+      
+      trie.populate(dictionary)
+      //expect(trie.length).to.eq(235886);
+      let suggestions = trie.suggest("piz")
+      console.log(suggestions)
+      expect(suggestions).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"])
+      trie.select("pizzeria");
+      console.log("after select: ", suggestions);
+      let suggestions2 = trie.suggest("piz")
+
+      expect(suggestions2).to.deep.eq(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"])
+
+    })
   })
 
 
