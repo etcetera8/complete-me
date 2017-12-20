@@ -63,7 +63,7 @@ describe('Search Trie', () => {
     // expect(trie.length).to.eq(2)
   })
 
-  describe('Suggest', () => {
+  describe('Insert', () => {
     let trie;
 
     beforeEach(() => {
@@ -110,7 +110,7 @@ describe('Search Trie', () => {
 
   })
 
-  describe('Suggest with dictionary', () => {
+  describe('DICTIONARY', () => {
     let trie;
 
     beforeEach(() => {
@@ -124,7 +124,7 @@ describe('Search Trie', () => {
     })
   })  
 
-  describe('Select', () => {
+  describe('SELECT', () => {
 
     let trie;
     beforeEach(() => {
@@ -137,14 +137,38 @@ describe('Search Trie', () => {
       //expect(trie.length).to.eq(235886);
       let suggestions = trie.suggest("piz")
       console.log(suggestions)
-      expect(suggestions).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"])
+      expect(suggestions).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
       trie.select("pizzeria");
       console.log("after select: ", suggestions);
       let suggestions2 = trie.suggest("piz")
 
-      expect(suggestions2).to.deep.eq(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"])
+      expect(suggestions2).to.deep.eq(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
+    })  
+  })
+
+  describe('DELETE', () => {
+    let trie;
+
+    beforeEach(() => {
+      trie = new Trie();
+    })
+
+    it('should delete a word', () => {
+      trie.populate(dictionary)
+
+      let suggestion1 = trie.suggest("piz")
+      
+      expect(suggestion1).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+      console.log(suggestion1)
+      trie.delete("pizzle");
+      
+      let suggestion2 = trie.suggest("piz")
+      console.log(suggestion2);
+      expect(suggestion2).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato"]);
 
     })
   })
+
+
 
 
