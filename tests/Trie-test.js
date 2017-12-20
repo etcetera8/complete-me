@@ -11,16 +11,16 @@ describe('Search Trie', () => {
   it('should start with zero elements', () => {
     expect(trie.length).to.eq(0);
   });
-
-  // it('should set its default root to null', () => {
-  //   expect(trie.root).to.eq(null);
-  // });
-    //write alg that finds given letter, i.e. first that returns path to that node
-    // phase 2 instead of searching for letter search for given string that equals
     
   it('should take in a word keep count of words', () => {
     trie.insert("hi")
     expect(trie.length).to.eq(1)
+  })  
+
+  it('should take in a word keep count of words', () => {
+    trie.insert("hi")
+    trie.insert("hello")
+    expect(trie.length).to.eq(2)
   })
 
   it('should have its first child be equal to h', () => {
@@ -38,7 +38,6 @@ describe('Search Trie', () => {
     expect(trie.root.children.h.children.i.wordEnd).to.eq(true)
   });
   
-
   it('should share parent nodes for words that start with the same letter', () => {
     trie.insert('hey');
     trie.insert('hi')
@@ -59,7 +58,7 @@ describe('Search Trie', () => {
     // expect(trie.length).to.eq(2)
   })
 
-  describe.only('Suggest', () => {
+  describe('Suggest', () => {
     let trie;
 
     beforeEach(() => {
@@ -86,15 +85,7 @@ describe('Search Trie', () => {
       expect(suggestion).to.deep.eq(["wiggle"]);
     })
 
-      // trie.insert("pizzeria")
-      // let suggestion2 = trie.suggest('piz')
-      // expect(suggestion2).to.deep.eq(["pizza", "pizzeria"]);
 
-   
-
-    // it('should start with zero elements', () => {
-    //   expect(trie.length).to.eq(0);
-    // });
   })
 
 
