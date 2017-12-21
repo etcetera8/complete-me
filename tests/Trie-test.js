@@ -6,6 +6,20 @@ import fs from 'fs';
 const text = "/usr/share/dict/words"
 const dictionary = fs.readFileSync(text).toString().trim().split('\n')
 
+describe('A NEW TRIE', () => {
+  let trie = new Trie();
+  
+  it('should instantiate with the correct default values' , function () {
+    console.log(trie.root)
+    expect(trie.children).to.deep.equal({});
+    expect(trie.wordEnd).to.equal(null);
+    expect(trie.value).to.equal(null);
+    expect(trie.selectCount).to.equal(0);
+    expect(trie.length).to.equal(0);
+    expect(trie.root).to.deep.equal({children:{}, wordEnd: null, value: null, selectCount: 0})
+  });
+})
+
 describe('INSERT', () => {
   let trie;
 
@@ -17,12 +31,12 @@ describe('INSERT', () => {
     expect(trie.length).to.eq(0);
   });
     
-  it('should take in a word keep count of words', () => {
+  it('should count 1 one word if only 1 is passed in', () => {
     trie.insert("hi")
     expect(trie.length).to.eq(1)
   })  
 
-  it('should take in two words and keep count', () => {
+  it('should count 2 words if two are passed in', () => {
     trie.insert("hi")
     trie.insert("hello")
     expect(trie.length).to.eq(2)
@@ -51,12 +65,6 @@ describe('INSERT', () => {
     expect(Object.keys(trie.root.children.h.children)).to.deep.eq(['e', 'i']);
   })
 
-  it.skip('should not create duplicate nodes when inserting duplicate words', () => {
-    trie.insert('hello');
-    trie.insert('hello');
-    expect(trie['length']).to.eq(1)
-  })
-
 })
 
   describe('SUGGEST', () => {
@@ -64,6 +72,10 @@ describe('INSERT', () => {
 
     beforeEach(() => {
       trie = new Trie();
+    })
+
+    it('should return an empty array if word is not there', () => {
+      expect(trie.suggest("burger")).to.eq(null)
     })
 
     it('provide a suggestion in an array', () => {
@@ -86,16 +98,6 @@ describe('INSERT', () => {
       expect(suggestion).to.deep.eq(["wiggle"]);
     })
 
-    it('should not suggest words that don\'t start with the search', () => {
-      trie.insert("pizza");
-      trie.insert("pizzas");
-      trie.insert("pizzaria");
-      trie.insert("pizzaparlor")
-
-      let suggestion = trie.suggest('piz')
-      expect(suggestion).to.deep.eq(["pizza", "pizzas", "pizzaria", "pizzaparlor"]);
-    })
-
     it('should return words with the same root', () => {
       trie.insert("pig");
       trie.insert("pigs");
@@ -103,10 +105,9 @@ describe('INSERT', () => {
       let suggestion = trie.suggest('p')
       expect(suggestion).to.deep.eq(["pig", "pigs"]);
     })
-
   })
 
-  describe('DICTIONARY', () => {
+  describe('DICTIONARY POPULATE', () => {
     let trie;
 
     beforeEach(() => {
@@ -127,12 +128,20 @@ describe('INSERT', () => {
       trie = new Trie();
     })
 
+    it('Should increment select count of the last character', function () {
+      trie.insert("big")
+      expect(trie.root.children.b.children.i.children.g.selectCount).to.equal(0);
+      trie.select('big');
+      expect(trie.root.children.b.children.i.children.g.selectCount).to.equal(1);
+    });
+
     it('should sort them by the highest rank', () => {
-      
       trie.populate(dictionary)
       expect(trie.length).to.eq(235886);
       let suggestions = trie.suggest("piz")
+
       expect(suggestions).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+      
       trie.select("pizzeria");
       let suggestions2 = trie.suggest("piz")
 
