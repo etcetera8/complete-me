@@ -1,3 +1,3 @@
 # PREFIX AUTOCOMPLETE TRIE
 
-A binary search tree for Turing 1710 FE
+- This is an autocomplete prefix tree in I made through test-driven development using JavaScript and mocha/chai testing suite

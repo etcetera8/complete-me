@@ -74,7 +74,7 @@ describe('INSERT', () => {
       trie = new Trie();
     })
 
-    it('should return an empty array if word is not there', () => {
+    it('should return null if word is not there', () => {
       expect(trie.suggest("burger")).to.eq(null)
     })
 
